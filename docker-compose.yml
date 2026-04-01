@@ -1,27 +1,38 @@
 version: '3.8'
-
 services:
   chrome:
     image: selenium/standalone-chrome:latest
     shm_size: 2gb
     ports:
-      - "4444:4444" # Puerto interno de control para el Bot (Selenium WebDriver)
-      - "9090:7900" # Mapeamos el puerto visual interno 7900 (noVNC web viewer) al 9090 externo de la VM
+      - "4444:4444"
+      - "9090:7900"
+      - "5900:5900"
     environment:
       - SE_NODE_MAX_SESSIONS=2
-      - SE_VNC_NO_PASSWORD=1 # Elimina la contraseña que pide el visor web por defecto
+      - SE_VNC_NO_PASSWORD=1
       - SE_START_XVFB=true
       - SE_SCREEN_WIDTH=1920
       - SE_SCREEN_HEIGHT=1080
       - SE_SCREEN_DEPTH=24
       - SE_SCREEN_DPI=96
       - TZ=America/Argentina/Buenos_Aires
-
   bot:
     build: .
     env_file:
       - .env
     environment:
       - TZ=America/Argentina/Buenos_Aires
+    depends_on:
+      - chrome
+  # --- NUEVO SERVICIO AÑADIDO ---
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command:
+      - "http"
+      # Nos conectamos al puerto interno 7900 del contenedor de chrome
+      - "chrome:7900"
     depends_on:
       - chrome
