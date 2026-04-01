@@ -1,0 +1,11 @@
+# Seguridad de Claves (NUNCA SUBIR)
+.env
+.env.local
+
+# Basura de Python / Compilados
+__pycache__/
+*.pyc
+
+# Basura y pruebas locales previas
+dump.html
+carrusel_tv.html
