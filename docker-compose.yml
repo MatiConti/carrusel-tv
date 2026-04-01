@@ -24,15 +24,10 @@ services:
       - TZ=America/Argentina/Buenos_Aires
     depends_on:
       - chrome
-  # --- NUEVO SERVICIO AÑADIDO ---
-  ngrok:
-    image: ngrok/ngrok:latest
-    restart: always
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
-    command:
-      - "http"
-      # Nos conectamos al puerto interno 7900 del contenedor de chrome
-      - "chrome:7900"
+
+  # --- Usamos Cloudflare para evitar bloqueos de WebSockets ---
+  cloudflare:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --url http://chrome:7900
     depends_on:
       - chrome
