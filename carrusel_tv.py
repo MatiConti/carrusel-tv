@@ -71,8 +71,8 @@ def maximizar_reporte_dt_griba(driver):
                 # 2. PLAN A (y mejor plan para Linux Xvfb): Inyección Javascript directa y brutal 
                 # Ahora que DevExpress fue engañado y dibujó los botones, hacemos el click
                 script_JS = """
-                    // 1. Estrategia Estrella: Buscar por el Tooltip exacto que DevExpress genera
-                    var elementos_por_titulo = document.querySelectorAll('[title*="full screen" i], [title*="Full screen" i], [aria-label*="full screen" i]');
+                    // 1. Estrategia Estrella: Buscar por el Tooltip exacto que DevExpress genera (Inglés y Español)
+                    var elementos_por_titulo = document.querySelectorAll('[title*="full screen" i], [title*="Full screen" i], [aria-label*="full screen" i], [title*="pantalla completa" i], [title*="maximizar" i], [aria-label*="maximizar" i], [title*="ampliar" i]');
                     if(elementos_por_titulo.length > 0) {
                         elementos_por_titulo[0].style.display = 'block';
                         elementos_por_titulo[0].style.visibility = 'visible';
@@ -84,7 +84,7 @@ def maximizar_reporte_dt_griba(driver):
                     var svgs = document.querySelectorAll('svg');
                     for (var j = 0; j < svgs.length; j++) {
                         var html = (svgs[j].innerHTML || '').toLowerCase();
-                        if (html.indexOf('fullscreen') !== -1 || html.indexOf('full screen') !== -1 || html.indexOf('maximize') !== -1) {
+                        if (html.indexOf('fullscreen') !== -1 || html.indexOf('full screen') !== -1 || html.indexOf('maximize') !== -1 || html.indexOf('pantalla completa') !== -1 || html.indexOf('maximizar') !== -1 || html.indexOf('ampliar') !== -1) {
                             var botonPadre = svgs[j].closest('.dx-dashboard-item-action-button') || svgs[j].parentNode;
                             botonPadre.style.display = 'block';
                             botonPadre.style.visibility = 'visible';
