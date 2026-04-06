@@ -25,9 +25,16 @@ services:
     depends_on:
       - chrome
 
-  # --- Usamos Cloudflare para evitar bloqueos de WebSockets ---
-  cloudflare:
-    image: cloudflare/cloudflared:latest
-    command: tunnel --url http://chrome:7900
+  # --- Usamos ngrok para acceso remoto con dominio estático ---
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command:
+      - "http"
+      - "chrome:7900"
+      - "--url"
+      - "paneltvoperaciones.ngrok.app"
     depends_on:
       - chrome
